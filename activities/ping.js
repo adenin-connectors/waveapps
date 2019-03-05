@@ -1,18 +1,29 @@
 'use strict';
 
-const logger = require('@adenin/cf-logger');
-const utils = require('./common/utils');
+const cfActivity = require('@adenin/cf-activity');
+const api = require('./common/api');
 
 module.exports = async (activity) => {
   try {
-    const message = 'This is an empty activity';
+    api.initialize(activity);
+    let query = {
+      query:
+        `query { 
+        user { 
+          id
+        } 
+      }`
+    };
 
-    logger.info(message);
+    //Ping returns true even if token is completly removed from code, 
+    //I think this only occurs after first authentication
+    const response = await api.graphql(query);
 
     activity.Response.Data = {
-      message: message
+      success: response && response.statusCode === 200
     };
   } catch (error) {
-    utils.handleError(error, activity);
+    cfActivity.handleError(activity, error);
+    activity.Response.Data.success = false;
   }
 };

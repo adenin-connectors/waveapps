@@ -40,16 +40,7 @@ function api(path, opts) {
     throw err;
   });
 }
-// convert response from /issues endpoint to 
-api.convertResponse = function (response) {
-  let items = [];
-  let raw = response.body.data.user;
 
-  let item = { id: raw.id, title: raw.firstName, description: raw.defaultEmail, link: raw.url, raw: raw };
-  items.push(item);
-
-  return { items: items };
-}
 const helpers = [
   'get',
   'post',
@@ -66,7 +57,7 @@ api.stream = (url, opts) => apigot(url, Object.assign({}, opts, {
 
 api.initialize = function (activity) {
   _activity = activity;
-}
+};
 
 for (const x of helpers) {
   const method = x.toUpperCase();

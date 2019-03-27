@@ -1,11 +1,8 @@
 'use strict';
-
-const cfActivity = require('@adenin/cf-activity');
 const api = require('./common/api');
 
 module.exports = async (activity) => {
   try {
-    api.initialize(activity);
     let query = {
       query:
         `query { 
@@ -23,7 +20,7 @@ module.exports = async (activity) => {
       success: response && response.statusCode === 200
     };
   } catch (error) {
-    cfActivity.handleError(activity, error);
+    Activity.handleError(error);
     activity.Response.Data.success = false;
   }
 };

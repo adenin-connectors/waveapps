@@ -14,13 +14,13 @@ module.exports = async function (activity) {
         } 
       }`
     };
+    api.initialize(activity);
     const response = await api.graphql(query);
-
-    if (Activity.isErrorResponse(response)) return;
+    if ($.isErrorResponse(activity, response)) return;
 
     activity.Response.Data = convertResponse(response);
   } catch (error) {
-    Activity.handleError(error);
+    $.handleError(activity, error);
   }
 };
 //**maps response data to items */
